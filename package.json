@@ -4,7 +4,8 @@
   "description": "RFID Feeder Server",
   "main": "app.js",
   "scripts": {
-    "test": "test.js"
+    "test": "test.js",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
