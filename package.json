@@ -1,0 +1,26 @@
+{
+  "name": "feedernet",
+  "version": "1.0.0",
+  "description": "RFID Feeder Server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interactionresearchstudio/FeederNet.git"
+  },
+  "keywords": [
+    "iot"
+  ],
+  "author": "Mike Vanis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/interactionresearchstudio/FeederNet/issues"
+  },
+  "homepage": "https://github.com/interactionresearchstudio/FeederNet#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  }
+}
