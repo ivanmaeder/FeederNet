@@ -4,7 +4,7 @@
   "description": "RFID Feeder Server",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "test.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/interactionresearchstudio/FeederNet#readme",
   "dependencies": {
     "express": "^4.16.3",
+    "mapbox-gl": "^0.45.0-beta.1",
     "socket.io": "^2.1.0"
   }
 }
