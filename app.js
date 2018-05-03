@@ -20,7 +20,7 @@ mysqlConnection.connect(function(err) {
     console.log("INFO: Connected to database.");
 });
 
-connection.end();
+mysqlConnection.end();
 
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/public'));
