@@ -60,7 +60,6 @@ io.on('connection', function(socket) {
                 console.log("INFO: Feeder " + feeder.feederName + " disconnected.");
                 delete feeder;
                 console.log(connectedFeeders);
-                break;
             }
         });
     });
