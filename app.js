@@ -58,8 +58,8 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function() {
         console.log("INFO: Socket disconnected. Socket ID: " + socket.id);
         for (var key in connectedFeeders) {
-            console.log("Feeder id: " + connectedFeeders[key].id);
-            if (connectedFeeders[key].id == socket.id) {
+            console.log("Feeder id: " + connectedFeeders[key].socketID);
+            if (connectedFeeders[key].socketID == socket.id) {
                 console.log("INFO: Feeder " + connectedFeeders[key].feederName + " disconnected.");
                 delete connectedFeeders[key];
                 console.log(connectedFeeders);
