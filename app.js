@@ -12,7 +12,7 @@ var mysqlConnection = mysql.createConnection({
     port: process.env.RDS_PORT
 });
 
-var connectedFeeders = [];
+var connectedFeeders = new Array();
 
 // Connect to MySQL database
 mysqlConnection.connect(function(err) {
@@ -51,17 +51,19 @@ io.on('connection', function(socket) {
         console.log("INFO: Received new feeder ID " + data.feederName);
         console.log("INFO: Associating " + data.feederName + " with ID " + socket.id);
         connectedFeeders.push({feederName: data.feederName, socketID: socket.id});
+        console.log("INFO: Updated connectedFeeders.");
+        console.log(connectedFeeders);
     });
 
     socket.on('disconnect', function() {
         console.log("INFO: Socket disconnected. Socket ID: " + socket.id);
-        connectedFeeders.forEach(function(feeder) {
+        for (var key in connectedFeeders) {
             console.log("Feeder id: " + feeder.id);
-            if (feeder.id == socket.id) {
-                console.log("INFO: Feeder " + feeder.feederName + " disconnected.");
-                delete feeder;
+            if (connectedFeeders[key].id == socket.id) {
+                console.log("INFO: Feeder " + connectedFeeders[key].feederName + " disconnected.");
+                delete connectedFeeders[key];
                 console.log(connectedFeeders);
             }
-        });
+        }
     });
 });
