@@ -35,26 +35,17 @@ server.listen(app.get('port'), function() {
     console.log('Server listening on port ' + app.get('port'));
 });
 
-// Setup feeder namespace
-var feederNsp = io.of('/feeders');
-
-feederNsp.on('connection', function(socket) {
-    console.log("INFO: New socket connection in feeder namespace.");
-
-    socket.on('disconnect', function() {
-        console.log("INFO: Socket with id " + socket.id + " disconnected.");
-    })
-});
-
 io.on('connection', function(socket) {
     console.log("INFO: New socket connection opened.");
 
-    socket.on('heartbeat', function(data) {
-        console.log("INFO: Received heartbeat from feeder " + data.feederName);
-        saveHeartbeat(data.feederName);
-    });
+    // Emit an ID request to the current socket to see if it's a feeder.
+    socket.emit('idRequest');
 
     socket.on('newTrack', function(data) {
         console.log("INFO: Received new track event!");
     });
+
+    socket.on('idTransmit', function(data) {
+        console.log("INFO: Received new feeder ID " + data.feederName);
+    })
 });
