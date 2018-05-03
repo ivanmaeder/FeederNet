@@ -12,7 +12,9 @@ var mysqlConnection = mysql.createConnection({
     port: process.env.RDS_PORT
 });
 
+var connectedFeeders = [];
 
+// Connect to MySQL database
 mysqlConnection.connect(function(err) {
     if (err) {
         console.log("ERROR: Database connection failed: " + err.stack);
@@ -47,5 +49,18 @@ io.on('connection', function(socket) {
 
     socket.on('idTransmit', function(data) {
         console.log("INFO: Received new feeder ID " + data.feederName);
-    })
+        console.log("INFO: Associating " + data.feederName + " with ID " + socket.id);
+        connectedFeeders.push({feederName: data.feederName, socketID: socket.id});
+    });
+
+    socket.on('disconnect', function() {
+        for (i in connectedFeeders) {
+            if (connectedFeeders[i].id == socket.id) {
+                console.log("INFO: Feeder " + connectedFeeders[i].feederName + " disconnected.");
+                delete connectedFeeders[i];
+                console.log(connectedFeeders);
+                break;
+            }
+        }
+    });
 });
