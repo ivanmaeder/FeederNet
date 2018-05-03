@@ -55,13 +55,13 @@ io.on('connection', function(socket) {
 
     socket.on('disconnect', function() {
         console.log("INFO: Socket disconnected.");
-        for (i in connectedFeeders) {
-            if (connectedFeeders[i].id == socket.id) {
-                console.log("INFO: Feeder " + connectedFeeders[i].feederName + " disconnected.");
-                delete connectedFeeders[i];
+        connectedFeeders.forEach(function(feeder) {
+            if (feeder.id == socket.id) {
+                console.log("INFO: Feeder " + feeder.feederName + " disconnected.");
+                delete feeder;
                 console.log(connectedFeeders);
                 break;
             }
-        }
+        });
     });
 });
