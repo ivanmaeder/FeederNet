@@ -56,6 +56,7 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function() {
         console.log("INFO: Socket disconnected. Socket ID: " + socket.id);
         connectedFeeders.forEach(function(feeder) {
+            console.log("Feeder id: " + feeder.id);
             if (feeder.id == socket.id) {
                 console.log("INFO: Feeder " + feeder.feederName + " disconnected.");
                 delete feeder;
