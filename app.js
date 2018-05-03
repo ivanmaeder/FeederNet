@@ -28,10 +28,6 @@ mysqlConnection.end();
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/public'));
 
-function saveHeartbeat(feederName) {
-
-}
-
 server.listen(app.get('port'), function() {
     console.log('Node version: ' + process.versions.node);
     console.log('Server listening on port ' + app.get('port'));
@@ -49,20 +45,16 @@ io.on('connection', function(socket) {
 
     socket.on('idTransmit', function(data) {
         console.log("INFO: Received new feeder ID " + data.feederName);
-        console.log("INFO: Associating " + data.feederName + " with ID " + socket.id);
         connectedFeeders.push({feederName: data.feederName, socketID: socket.id});
-        console.log("INFO: Updated connectedFeeders.");
-        console.log(connectedFeeders);
+        console.log("INFO: Associated " + data.feederName + " with ID " + socket.id);
     });
 
     socket.on('disconnect', function() {
         console.log("INFO: Socket disconnected. Socket ID: " + socket.id);
         for (var key in connectedFeeders) {
-            console.log("Feeder id: " + connectedFeeders[key].socketID);
             if (connectedFeeders[key].socketID == socket.id) {
                 console.log("INFO: Feeder " + connectedFeeders[key].feederName + " disconnected.");
                 delete connectedFeeders[key];
-                console.log(connectedFeeders);
             }
         }
     });
