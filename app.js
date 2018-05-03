@@ -15,4 +15,8 @@ server.listen(app.get('port'), function() {
 io.on('connection', function(socket) {
     console.log("INFO: New socket connection opened.");
 
-})
+    socket.on('heartbeat', function(data) {
+        console.log("INFO: Received heartbeat with data: ");
+        console.log(data);
+    });
+});
