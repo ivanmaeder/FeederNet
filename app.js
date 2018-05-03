@@ -39,7 +39,7 @@ io.on('connection', function(socket) {
     console.log("INFO: New socket connection opened.");
 
     // Emit an ID request to the current socket to see if it's a feeder.
-    socket.emit('idRequest');
+    socket.emit('idRequest', " ");
 
     socket.on('newTrack', function(data) {
         console.log("INFO: Received new track event!");
