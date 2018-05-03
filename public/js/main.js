@@ -1,5 +1,5 @@
 var socket;
-var mapboxgl = require('../node_modules/mapbox-gl/dist/mapbox-gl.js');
+var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
 $(document).ready(function() {
     socket = io();
