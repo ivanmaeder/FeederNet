@@ -26,6 +26,7 @@ mysqlConnection.connect(function(err) {
     mysqlConnection.query("SHOW TABLES", function (err, result) {
         if (err) {
             console.log("ERROR: Could not show tables.");
+            console.log(err);
             return;
         }
         console.log(result);
