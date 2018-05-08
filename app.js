@@ -41,7 +41,7 @@ function logTrack(name, timedate, rfid) {
             console.log("ERROR: Database connection failed: " + err.stack);
             return;
         }
-        var sql = "INSERT INTO log (feedername, timedate, rfid) VALUES ?";
+        var sql = "INSERT INTO log VALUES ?";
         var values = {feedername: name, timedate: timedate, rfid: rfid};
         mysqlConnection.query(sql, values, function (err, result) {
             if (err) {
