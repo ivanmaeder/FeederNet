@@ -32,7 +32,8 @@ function logTrack(name, timedate, rfid) {
         host: process.env.RDS_HOSTNAME,
         user: process.env.RDS_USERNAME,
         password: process.env.RDS_PASSWORD,
-        port: process.env.RDS_PORT
+        port: process.env.RDS_PORT,
+        database: process.env.RDS_DB_NAME
     });
     mysqlConnection.connect(function(err) {
         if (err) {
