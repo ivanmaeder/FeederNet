@@ -23,7 +23,7 @@ mysqlConnection.connect(function(err) {
         return;
     }
     console.log("INFO: Connected to database.");
-    mysql.query("SHOW TABLES", function (err, result) {
+    mysqlConnection.query("SHOW TABLES", function (err, result) {
         if (err) {
             console.log("ERROR: Could not show tables.");
             return;
