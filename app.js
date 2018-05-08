@@ -42,7 +42,7 @@ function logTrack(name, timedate, rfid) {
             return;
         }
         var sql = "INSERT INTO log VALUES ?";
-        var values = {feedername: name, timedate: timedate, rfid: rfid};
+        var values = {name, timedate, rfid};
         mysqlConnection.query(sql, values, function (err, result) {
             if (err) {
                 console.log("ERROR: SQL insertion failed.");
