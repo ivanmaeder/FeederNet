@@ -33,34 +33,17 @@ mysqlConnection.connect(function(err) {
     });
 });
 
-mysqlConnection.end();
 
 function logTrack(name, timedate, rfid) {
-    // Connect to MySQL database
-    var mysqlConnection = mysql.createConnection({
-        host: process.env.RDS_HOSTNAME,
-        user: process.env.RDS_USERNAME,
-        password: process.env.RDS_PASSWORD,
-        port: process.env.RDS_PORT,
-        database: process.env.RDS_DB_NAME
-    });
-    mysqlConnection.connect(function(err) {
+    var sql = "INSERT INTO log (feedername, timedate, rfid) VALUES(\"" + name + "\",\"" + timedate + "\",\"" + rfid + "\");";
+    mysqlConnection.query(sql, function (err, result) {
         if (err) {
-            console.log("ERROR: Database connection failed: " + err.stack);
+            console.log("ERROR: SQL insertion failed.");
+            console.log(err);
             return;
         }
-        var sql = "INSERT INTO log (feedername, timedate, rfid) VALUES(\"" + name + "\",\"" + timedate + "\",\"" + rfid + "\");";
-        mysqlConnection.query(sql, function (err, result) {
-            if (err) {
-                console.log("ERROR: SQL insertion failed.");
-                console.log(err);
-                return;
-            }
-            console.log("INFO: Inserted: " + result.affectedRows);
-            mysqlConnection.end();
-        });
+        console.log("INFO: Inserted: " + result.affectedRows);
     });
-
 }
 
 // Express setup
