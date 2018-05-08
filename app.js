@@ -46,6 +46,7 @@ function logTrack(name, timedate, rfid) {
         mysqlConnection.query(sql, values, function (err, result) {
             if (err) {
                 console.log("ERROR: SQL insertion failed.");
+                console.log(err);
                 return;
             }
             console.log("INFO: Inserted: " + result.affectedRows);
