@@ -28,6 +28,12 @@ mysqlConnection.end();
 
 function logTrack(name, timedate, rfid) {
     // Connect to MySQL database
+    var mysqlConnection = mysql.createConnection({
+        host: process.env.RDS_HOSTNAME,
+        user: process.env.RDS_USERNAME,
+        password: process.env.RDS_PASSWORD,
+        port: process.env.RDS_PORT
+    });
     mysqlConnection.connect(function(err) {
         if (err) {
             console.log("ERROR: Database connection failed: " + err.stack);
@@ -70,7 +76,7 @@ io.on('connection', function(socket) {
     socket.on('newTrack', function(data) {
         console.log("INFO: Received new track event from feeder " + data.feederName);
         console.log("INFO: Timestamp: " + data.timedate + " | " + "RFID: " + data.rfid);
-        //logTrack(data.feederName, data.timedate, data.rfid);
+        logTrack(data.feederName, data.timedate, data.rfid);
     });
 
     // Receive new feeder's ID.
