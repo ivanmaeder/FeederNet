@@ -68,8 +68,9 @@ io.on('connection', function(socket) {
 
     // Insert feeder data to database.
     socket.on('newTrack', function(data) {
-        console.log("INFO: Received new track event!");
-        logTrack(data.feederName, data.timedate, data.rfid);
+        console.log("INFO: Received new track event from feeder " + data.feederName);
+        console.log("INFO: Timestamp: " + data.timedate + " | " + "RFID: " + data.rfid);
+        //logTrack(data.feederName, data.timedate, data.rfid);
     });
 
     // Receive new feeder's ID.
