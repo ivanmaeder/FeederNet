@@ -9,7 +9,8 @@ var mysqlConnection = mysql.createConnection({
     host: process.env.RDS_HOSTNAME,
     user: process.env.RDS_USERNAME,
     password: process.env.RDS_PASSWORD,
-    port: process.env.RDS_PORT
+    port: process.env.RDS_PORT,
+    database: process.env.RDS_DB_NAME
 });
 
 // Connected feeder array
@@ -41,10 +42,8 @@ function logTrack(name, timedate, rfid) {
             return;
         }
         var sql = "INSERT INTO log (feedername, timedate, rfid) VALUES ?";
-        var values = [
-            [name, timedate, rfid]
-        ];
-        mysqlConnection.query(sql, [values], function (err, result) {
+        var values = {feedername: name, timedate: timedate, rfid: rfid};
+        mysqlConnection.query(sql, values, function (err, result) {
             if (err) {
                 console.log("ERROR: SQL insertion failed.");
                 return;
