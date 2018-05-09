@@ -46,6 +46,20 @@ function logTrack(name, timedate, rfid) {
     });
 }
 
+function getFeeders(socket) {
+    var sql = "SELECT * FROM feeders";
+    mysqlConnection.query(sql, function (err, result) {
+        if (err) {
+            console.log("ERROR: Failed to get feeders.");
+            console.log(err);
+            return;
+        }
+        console.log("INFO: Sent feeders to client.");
+        socket.emit('updateFeeders', result);
+    });
+
+}
+
 // Express setup
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/public'));
@@ -75,6 +89,12 @@ io.on('connection', function(socket) {
         console.log("INFO: Received new feeder ID " + data.feederName);
         connectedFeeders.push({feederName: data.feederName, socketID: socket.id});
         console.log("INFO: Associated " + data.feederName + " with ID " + socket.id);
+    });
+
+    // Get list of feeders
+    socket.on('getFeeders', function(data) {
+        console.log("INFO: Requested feeder list");
+
     });
 
     // Detect disconnected feeder.
