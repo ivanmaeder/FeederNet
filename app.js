@@ -94,7 +94,7 @@ io.on('connection', function(socket) {
     // Get list of feeders
     socket.on('getFeeders', function(data) {
         console.log("INFO: Requested feeder list");
-
+        getFeeders(socket);
     });
 
     // Detect disconnected feeder.

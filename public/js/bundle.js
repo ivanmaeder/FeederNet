@@ -47,8 +47,10 @@ var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
 $(document).ready(function() {
     socket = io();
-
     setupMap();
+    getFeeders();
+
+    socket.on('updateFeeders', insertMarkers(msg));
 });
 
 function setupMap() {
@@ -59,6 +61,14 @@ function setupMap() {
     center: [-0.038564, 51.4735455],
     zoom: 17
     });
+}
+
+function getFeeders() {
+    socket.emit('getFeeders', ' ');
+}
+
+function insertMarkers(data) {
+    console.log(data);
 }
 
 },{"mapbox-gl/dist/mapbox-gl.js":1}]},{},[2]);

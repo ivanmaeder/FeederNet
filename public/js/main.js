@@ -20,7 +20,7 @@ function setupMap() {
 }
 
 function getFeeders() {
-    socket.emit('getFeeders', null);
+    socket.emit('getFeeders', ' ');
 }
 
 function insertMarkers(data) {
