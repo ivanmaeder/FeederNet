@@ -50,7 +50,9 @@ $(document).ready(function() {
     setupMap();
     getFeeders();
 
-    socket.on('updateFeeders', insertMarkers(msg));
+    socket.on('updateFeeders', function(msg) {
+        insertMarkers(msg);
+    });
 });
 
 function setupMap() {
