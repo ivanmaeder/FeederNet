@@ -44,20 +44,21 @@ return mapboxgl;
 },{}],2:[function(require,module,exports){
 var socket;
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+var map;
 
 $(document).ready(function() {
-    socket = io();
+    socket = io.connect('http://irs-feedernet.eu-west-1.elasticbeanstalk.com/');
     setupMap();
     getFeeders();
 
     socket.on('updateFeeders', function(msg) {
-        insertMarkers(msg[0]);
+        insertMarkers(msg);
     });
 });
 
 function setupMap() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiaW50ZXJhY3Rpb25yZXNlYXJjaHN0dWRpbyIsImEiOiJjamdwcXd1bTMwMmNpMnhwZWU1NTRibWg4In0.Z0N-6EZWHB1cawLd1Hz_2A';
-    var map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v10',
     center: [-0.038564, 51.4735455],
@@ -70,11 +71,15 @@ function getFeeders() {
 }
 
 function insertMarkers(data) {
-    for(var device in data) {
-        console.log("Feeder name: " + device.feedername + " | Lat: " + device.lat + " | Lon: " + device.lon);
-        console.log(device);
+    for(var index in data) {
+        console.log("Feeder name: " + data[index].feedername + " | Lat: " + data[index].lat + " | Lon: " + data[index].lon);
+        addMarker(data[index].lat, data[index].lon);
     }
     console.log(data);
+}
+
+function addMarker(lat, lon) {
+    L.marker([parseInt(lat), parseInt(lon)]).addTo(map);
 }
 
 },{"mapbox-gl/dist/mapbox-gl.js":1}]},{},[2]);

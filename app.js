@@ -47,15 +47,35 @@ function logTrack(name, timedate, rfid) {
 }
 
 function getFeeders(socket) {
-    var sql = "SELECT * FROM feeders";
-    mysqlConnection.query(sql, function (err, result) {
+    var returnData = new Array();
+    var getFeedersSQL = "SELECT * FROM feeders";
+    mysqlConnection.query(getFeedersSQL, function (err, feederData) {
         if (err) {
             console.log("ERROR: Failed to get feeders.");
             console.log(err);
             return;
         }
         console.log("INFO: Sent feeders to client.");
-        socket.emit('updateFeeders', result);
+        for(var index in feederData) {
+            feederData[index].connectionStatus = "Offline";
+            for(var connIndex in connectedFeeders) {
+                if (feederData[index].feedername == connectedFeeders[connIndex].feederName) {
+                    feederData[index].connectionStatus = "Offline";
+                    break;
+                }
+            }
+            mysqlConnection.query("SELECT * FROM logs WHERE feedername = '" +
+                feederData[index].feedername + "'", function (err, feederLogs)
+            {
+                if (err) {
+                    console.log("ERROR: Failed to get feeder logs.");
+                    console.log(err);
+                    return
+                }
+                feederData[index].logs = feederLogs;
+            });
+        }
+        socket.emit('updateFeeders', feederData);
     });
 
 }
@@ -103,7 +123,7 @@ io.on('connection', function(socket) {
         for (var key in connectedFeeders) {
             if (connectedFeeders[key].socketID == socket.id) {
                 console.log("INFO: Feeder " + connectedFeeders[key].feederName + " disconnected.");
-                delete connectedFeeders[key];
+                connectedFeeders.splice(key, 1);
             }
         }
     });
