@@ -51,7 +51,7 @@ $(document).ready(function() {
     getFeeders();
 
     socket.on('updateFeeders', function(msg) {
-        insertMarkers(msg);
+        insertMarkers(msg[0]);
     });
 });
 
