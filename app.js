@@ -65,7 +65,7 @@ function getFeeders(socket) {
                     break;
                 }
             }
-            mysqlConnection.query("SELECT * FROM log WHERE feedername = '" +
+            mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
                 feederData[index].feedername + "'", function (err, feederLogs)
             {
                 if (err) {
