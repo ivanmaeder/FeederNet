@@ -57,6 +57,7 @@ function getFeeders(socket) {
         }
         console.log("INFO: Sent feeders to client.");
         for(var index in feederData) {
+            console.log("INFO: Feeder name: " + feederData[index].feedername);
             feederData[index].connectionStatus = "Offline";
             for(var connIndex in connectedFeeders) {
                 if (feederData[index].feedername == connectedFeeders[connIndex].feederName) {
