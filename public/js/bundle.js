@@ -74,6 +74,7 @@ function insertMarkers(data) {
         console.log("Feeder name: " + device.feedername + " | Lat: " + device.lat + " | Lon: " + device.lon);
         console.log(device);
     }
+    console.log(data);
 }
 
 },{"mapbox-gl/dist/mapbox-gl.js":1}]},{},[2]);
