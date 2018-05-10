@@ -70,7 +70,9 @@ function getFeeders() {
 }
 
 function insertMarkers(data) {
-    console.log(data);
+    for(var device in data) {
+        console.log("Feeder name: " + device.feedername + " | Lat: " + device.lat + " | Lon: " + device.lon);
+    }
 }
 
 },{"mapbox-gl/dist/mapbox-gl.js":1}]},{},[2]);
