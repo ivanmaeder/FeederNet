@@ -28,5 +28,6 @@ function getFeeders() {
 function insertMarkers(data) {
     for(var device in data) {
         console.log("Feeder name: " + device.feedername + " | Lat: " + device.lat + " | Lon: " + device.lon);
+        console.log(device);
     }
 }
