@@ -57,7 +57,6 @@ function getFeeders(socket) {
         }
         console.log("INFO: Sent feeders to client.");
         for(var index = 0; index < feederData.length; ++index) {
-            feederData[index].recentLog = new Array();
             console.log("INFO: Feeder name: " + feederData[index].feedername);
 
             feederData[index].connectionStatus = "Offline";
@@ -77,6 +76,7 @@ function getFeeders(socket) {
                     return
                 }
                 for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
+                    feederData[index].recentLog = new Array();
                     feederData[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
                 }
                 console.log(feederData[index]);
