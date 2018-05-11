@@ -56,9 +56,12 @@ function getFeeders(socket) {
             return;
         }
         console.log("INFO: Sent feeders to client.");
-        for(var index in feederData) {
+        for(var index = 0; index < feederData.length; ++index) {
+            feederData[index].recentLog = new Array();
             console.log("INFO: Feeder name: " + feederData[index].feedername);
+
             feederData[index].connectionStatus = "Offline";
+            // Check if feeder is offline.
             for(var connIndex in connectedFeeders) {
                 if (feederData[index].feedername == connectedFeeders[connIndex].feederName) {
                     feederData[index].connectionStatus = "Offline";
@@ -73,14 +76,15 @@ function getFeeders(socket) {
                     console.log(err);
                     return
                 }
-                feederData[index].recentLog = new Array();
-                for (var logIndex in feederLogs) {
+                for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
                     feederData[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
                 }
                 console.log(feederData[index]);
+                if (index == feederData.length-1) {
+                    socket.emit('updateFeeders', feederData);
+                }
             });
         }
-        socket.emit('updateFeeders', feederData);
     });
 
 }
