@@ -68,7 +68,7 @@ function getFeeders(socket) {
                 }
             }
 
-            socket.emit('updateFeeders', feederData);
+
 
             // mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
             //     feederData[index].feedername + "'", function (err, feederLogs)
@@ -88,6 +88,7 @@ function getFeeders(socket) {
             //     }
             // });
         }
+        socket.emit('updateFeeders', feederData);
     });
 
 }
