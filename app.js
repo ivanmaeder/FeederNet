@@ -98,6 +98,7 @@ function checkConnectionStatus(data) {
 
 function getLog(data, callback) {
     return function(callback) {
+        console.log("Running getLog...");
         // Get individual feeder's logs.
         mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
             data.feedername + "'", function (err, feederLogs)
