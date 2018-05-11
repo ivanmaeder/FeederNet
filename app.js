@@ -73,11 +73,8 @@ function getFeeders(socket) {
                     console.log(err);
                     return
                 }
-                feederData[index].logs = new Array();
-                for (var logIndex in feederLogs) {
-                    console.log(feederLogs[logIndex]);
-                    feederData[index].logs.push(feederLogs[logIndex])
-                }
+                feederData[index].recentLog = feederLogs[logIndex];
+                console.log(feederData[index]);
             });
         }
         socket.emit('updateFeeders', feederData);
