@@ -67,23 +67,26 @@ function getFeeders(socket) {
                     break;
                 }
             }
-            mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
-                feederData[index].feedername + "'", function (err, feederLogs)
-            {
-                if (err) {
-                    console.log("ERROR: Failed to get feeder logs.");
-                    console.log(err);
-                    return
-                }
-                for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
-                    feederData[index].recentLog = new Array();
-                    feederData[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
-                }
-                console.log(feederData[index]);
-                if (index == feederData.length-1) {
-                    socket.emit('updateFeeders', feederData);
-                }
-            });
+
+            socket.emit('updateFeeders', feederData);
+
+            // mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
+            //     feederData[index].feedername + "'", function (err, feederLogs)
+            // {
+            //     if (err) {
+            //         console.log("ERROR: Failed to get feeder logs.");
+            //         console.log(err);
+            //         return
+            //     }
+            //     for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
+            //         feederData[index].recentLog = new Array();
+            //         feederData[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
+            //     }
+            //     console.log(feederData[index]);
+            //     if (index == feederData.length-1) {
+            //         socket.emit('updateFeeders', feederData);
+            //     }
+            // });
         }
     });
 
