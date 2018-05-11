@@ -82,9 +82,26 @@ function getFormattedPopupContent(feederName, status, logs) {
         '<b>Status</b><br><span style="color: ' + colour + ';">' + status + '</span><br><br>' +
         '<b>Recent logs</b><br>';
 
-    if (logs) {
+    if (feederName == 'bpb-low') {
+        logs = new Array();
+        logs.push({timestamp: "10/5/2018-10:44:53", birdname: "Apollo"});
+        logs.push({timestamp: "10/5/2018-10:45:10", birdname: "Apollo"});
         for(var index in logs) {
-            content += logs[index].timestamp + ' ' + logs[index].birdname + '</b>';
+            content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
+        }
+    }
+    else if (feederName == 'bpb-medium') {
+        logs = new Array();
+        logs.push({timestamp: "10/5/2018-12:37:0", birdname: "Apollo"});
+        for(var index in logs) {
+            content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
+        }
+    }
+    else if (feederName == 'bpb-high') {
+        logs = new Array();
+        logs.push({timestamp: "10/5/2018-12:26:10", birdname: "Apollo"});
+        for(var index in logs) {
+            content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
         }
     }
     else {
