@@ -74,7 +74,7 @@ function getFeeders(socket) {
                     return
                 }
                 console.log(feederLogs);
-                feederData[index].logs = feederLogs;
+                feederData[index].logs.push(feederLogs);
             });
         }
         socket.emit('updateFeeders', feederData);
