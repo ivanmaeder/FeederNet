@@ -73,6 +73,7 @@ function getFeeders(socket) {
                     console.log(err);
                     return
                 }
+                console.log(feederLogs);
                 feederData[index].logs = feederLogs;
             });
         }
