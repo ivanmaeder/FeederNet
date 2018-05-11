@@ -52,16 +52,16 @@ function requestData() {
 function insertMarkers(data) {
     for(var index in data) {
         console.log("Feeder name: " + data[index].feedername + " | Lat: " + data[index].lat + " | Lon: " + data[index].lon);
-        addMarker(data[index].lat, data[index].lon, data[index].feedername);
+        addMarker(data[index].lat, data[index].lon, data[index].feedername, data[index].connectionStatus);
     }
     console.log(data);
 }
 
-function addMarker(lat, lon, feederName) {
+function addMarker(lat, lon, feederName, connStatus) {
     var popupContent =
         '<b>' + feederName + '</b><br>' +
         '<b><span style="color: "'
-    var marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map).on('click', onMarkerClick).bindPopup(getFormattedPopupContent(feederName, 'Offline', null));
+    var marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map).on('click', onMarkerClick).bindPopup(getFormattedPopupContent(feederName, connStatus, null));
     markers.push(marker);
 }
 
