@@ -56,11 +56,10 @@ function getFeeders(socket) {
             console.log(err);
             return;
         }
-        console.log("INFO: Sent feeders to client.");
         for(var index = 0; index < feederData.length; ++index) {
-
             waterfall([
                 function(callback) {
+                    console.log("INFO: Feeder name: " + feederData[index].feedername);
                     // Insert connection status
                     feederData[index].connectionStatus = "Offline";
                     for(var connIndex in connectedFeeders) {
@@ -90,7 +89,6 @@ function getFeeders(socket) {
             ], function(err, result) {
                 socket.emit('updateFeeders', feederData);
             });
-            console.log("INFO: Feeder name: " + feederData[index].feedername);
 
 
 
