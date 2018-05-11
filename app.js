@@ -69,7 +69,7 @@ function getFeeders(socket) {
                             break;
                         }
                     }
-                }
+                },
                 function(callback) {
                     // Get individual feeder's logs.
                     mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
@@ -85,7 +85,7 @@ function getFeeders(socket) {
                                 feederData[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
                             }
                         }
-                    }
+                    });
                 }
             ], function(err, result) {
                 socket.emit('updateFeeders', feederData);
