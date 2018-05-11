@@ -83,7 +83,7 @@ function constructDataObjects(dataArray) {
 
 function checkConnectionStatus(data) {
     return function(callback) {
-        console.log("INFO: Feeder name: " + data[index].feedername);
+        console.log("INFO: Feeder name: " + data.feedername);
         // Insert connection status
         data.connectionStatus = "Offline";
         for(var connIndex in connectedFeeders) {
