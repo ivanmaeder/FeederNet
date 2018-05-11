@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const http = require('http');
+const waterfall = require('async-waterfall');
 const app = express();
 const server = http.createServer(app);
 const io = require('socket.io').listen(server);
@@ -57,16 +58,41 @@ function getFeeders(socket) {
         }
         console.log("INFO: Sent feeders to client.");
         for(var index = 0; index < feederData.length; ++index) {
+
+            waterfall([
+                function(callback) {
+                    // Insert connection status
+                    feederData[index].connectionStatus = "Offline";
+                    for(var connIndex in connectedFeeders) {
+                        if (feederData[index].feedername == connectedFeeders[connIndex].feederName) {
+                            feederData[index].connectionStatus = "Offline";
+                            break;
+                        }
+                    }
+                }
+                function(callback) {
+                    // Get individual feeder's logs.
+                    mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
+                        feederData[index].feedername + "'", function (err, feederLogs)
+                    {
+                        if (err) {
+                            console.log("ERROR: Failed to get feeder logs.");
+                            console.log(err);
+                        }
+                        else {
+                            feederData[index].recentLog = new Array();
+                            for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
+                                feederData[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
+                            }
+                        }
+                    }
+                }
+            ], function(err, result) {
+                socket.emit('updateFeeders', feederData);
+            });
             console.log("INFO: Feeder name: " + feederData[index].feedername);
 
-            feederData[index].connectionStatus = "Offline";
-            // Check if feeder is offline.
-            for(var connIndex in connectedFeeders) {
-                if (feederData[index].feedername == connectedFeeders[connIndex].feederName) {
-                    feederData[index].connectionStatus = "Offline";
-                    break;
-                }
-            }
+
 
 
 
