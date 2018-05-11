@@ -73,11 +73,10 @@ function getFeeders(socket) {
                     console.log(err);
                     return
                 }
-                console.log(feederLogs);
-                feederData[index].logs.push(feederLogs);
+                feederData[index].logs = feederLogs;
+                socket.emit('updateFeeders', feederData);
             });
         }
-        socket.emit('updateFeeders', feederData);
     });
 
 }
