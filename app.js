@@ -73,7 +73,10 @@ function getFeeders(socket) {
                     console.log(err);
                     return
                 }
-                feederData[index].recentLog = feederLogs;
+                feederData[index].recentLog = new Array();
+                for (var logIndex in feederLogs) {
+                    feederData[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
+                }
                 console.log(feederData[index]);
             });
         }
