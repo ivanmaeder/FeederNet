@@ -50,10 +50,10 @@ function requestData() {
 }
 
 function insertMarkers(data) {
-    // for(var index in data) {
-    //     console.log("Feeder name: " + data[index].feedername + " | Lat: " + data[index].lat + " | Lon: " + data[index].lon);
-    //     addMarker(data[index].lat, data[index].lon, data[index].feedername);
-    // }
+    for(var index in data) {
+        console.log("Feeder name: " + data[index].feedername + " | Lat: " + data[index].lat + " | Lon: " + data[index].lon);
+        addMarker(data[index].lat, data[index].lon, data[index].feedername);
+    }
     console.log(data);
 }
 
@@ -61,7 +61,7 @@ function addMarker(lat, lon, feederName) {
     var popupContent =
         '<b>' + feederName + '</b><br>' +
         '<b><span style="color: "'
-    var marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map).on('click', onMarkerClick).bindPopup(getFormattedPopupContent(feederName, 'Online', null));
+    var marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map).on('click', onMarkerClick).bindPopup(getFormattedPopupContent(feederName, 'Offline', null));
     markers.push(marker);
 }
 
