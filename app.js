@@ -108,8 +108,10 @@ function getLog(data, callback) {
             }
             else {
                 data.recentLog = new Array();
+                console.log("INFO: Feeder " + data.feedername + " logs:");
+                console.log(feederLogs);
                 for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
-                    data.recentLog.push({timedate: data.timedate});
+                    data.recentLog.push({timedate: feederLogs[logIndex].timedate});
                 }
                 callback(err, data);
             }
