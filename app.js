@@ -125,17 +125,6 @@ function getFeeders(socket) {
 
 }
 
-/*
-Get feeder routine
-
-- Get feeder table from database
-- Iterate through each feeder
-* Check feeder connection status
-* Get feeder logs
-- Send data object to client
-
-*/
-
 // Express setup
 app.set('port', process.env.PORT || 8080);
 app.use(express.static(__dirname + '/public'));
