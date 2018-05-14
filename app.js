@@ -1,10 +1,10 @@
-const express = require('express');
-const mysql = require('mysql');
-const http = require('http');
-const async = require('async');
-const app = express();
-const server = http.createServer(app);
-const io = require('socket.io').listen(server);
+var express = require('express');
+var mysql = require('mysql');
+var http = require('http');
+var async = require('async');
+var app = express();
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 
 var mysqlConnection = mysql.createConnection({
     host: process.env.RDS_HOSTNAME,
@@ -15,7 +15,7 @@ var mysqlConnection = mysql.createConnection({
 });
 
 // Connected feeder array
-var connectedFeeders = new Array();
+var connectedFeeders = [];
 
 // Connect to MySQL database
 mysqlConnection.connect(function(err) {
@@ -48,77 +48,76 @@ function logTrack(name, timedate, rfid) {
 }
 
 function getFeeders(socket) {
-    var returnData = new Array();
-    var getFeedersSQL = "SELECT * FROM feeders";
-    mysqlConnection.query(getFeedersSQL, function (err, feederData) {
-        if (err) {
-            console.log("ERROR: Failed to get feeders.");
-            console.log(err);
-            return;
-        }
-        async.waterfall([
-            constructDataObjects(feederData)
-        ], function(err, dataArray) {
-            socket.emit('updateFeeders', feederData);
-        });
-
-    });
-}
-
-function constructDataObjects(dataArray) {
-    return function(callback) {
-        for(var index = 0; index < dataArray.length; ++index) {
-            async.waterfall([
-                checkConnectionStatus(dataArray[index]),
-                getLog
-            ], function(err, data) {
-                dataArray[index] = data;
-                console.log("INFO: Data: ");
-                console.log(dataArray[index]);
-            });
-        }
-        callback(null, dataArray);
-    }
-}
-
-function checkConnectionStatus(data) {
-    return function(callback) {
-        console.log("INFO: Feeder name: " + data.feedername);
-        // Insert connection status
-        data.connectionStatus = "Offline";
-        for(var connIndex in connectedFeeders) {
-            if (data.feedername == connectedFeeders[connIndex].feederName) {
-                data.connectionStatus = "Offline";
-                break;
-            }
-        }
-        callback(null, data);
-    }
-}
-
-function getLog(data, callback) {
-    return function(callback) {
-        console.log("Running getLog...");
-        // Get individual feeder's logs.
-        mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
-            data.feedername + "'", function (err, feederLogs)
-        {
-            if (err) {
-                console.log("ERROR: Failed to get feeder logs.");
-                console.log(err);
-            }
-            else {
-                data.recentLog = new Array();
-                console.log("INFO: Feeder " + data.feedername + " logs:");
-                console.log(feederLogs);
-                for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
-                    data.recentLog.push({timedate: feederLogs[logIndex].timedate});
+    async.waterfall([
+        function (callback) {
+            // Get feeder table from database.
+            var getFeedersSQL = "SELECT * FROM feeders";
+            mysqlConnection.query(getFeedersSQL, function (dberr, feederData) {
+                if (dberr) {
+                    console.log("ERROR: Failed to get feeders.");
+                    console.log(dberr);
                 }
-                callback(err, data);
+                callback(dberr, feederData);
+            });
+        },
+        function (data, callback) {
+            // Check feeder connection.
+            for (let index in data) {
+                data[index].connectionStatus = "Offline";
+                for(var connIndex in connectedFeeders) {
+                    if (data[index].feedername == connectedFeeders[connIndex].feederName) {
+                        data[index].connectionStatus = "Online";
+                        break;
+                    }
+                }
+                callback(null, data);
             }
-        });
-    }
+        },
+        function (data, callback) {
+            // Get feeder logs
+            for (let index in data) {
+                mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
+                    data[index].feedername + "'", function (dberr, feederLogs)
+                {
+                    if (dberr) {
+                        console.log("ERROR: Failed to get feeder logs.");
+                        console.log(dberr);
+                    }
+                    else {
+                        data[index].recentLog = [];
+                        console.log("INFO: Feeder " + data[index].feedername + " logs:");
+                        console.log(feederLogs);
+                        for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
+                            data[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
+                        }
+                    }
+                    callback(dberr, data);
+                });
+            }
+        },
+        function (data, callback) {
+            socket.emit('updateFeeders', data);
+            callback(null, data);
+        }
+    ], function (err) {
+        if (err) {
+            console.log("ERROR: Waterfall failed.");
+            console.log(err);
+        }
+    });
+
 }
+
+/*
+Get feeder routine
+
+- Get feeder table from database
+- Iterate through each feeder
+    * Check feeder connection status
+    * Get feeder logs
+- Send data object to client
+
+*/
 
 // Express setup
 app.set('port', process.env.PORT || 8080);

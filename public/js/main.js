@@ -1,6 +1,6 @@
 var socket;
 var map;
-var markers = new Array();
+var markers = [];
 
 /*
 Popup display
@@ -60,7 +60,7 @@ function insertMarkers(data) {
 function addMarker(lat, lon, feederName, connStatus) {
     var popupContent =
         '<b>' + feederName + '</b><br>' +
-        '<b><span style="color: "'
+        '<b><span style="color: "';
     var marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map).on('click', onMarkerClick).bindPopup(getFormattedPopupContent(feederName, connStatus, null));
     markers.push(marker);
 }
@@ -83,7 +83,7 @@ function getFormattedPopupContent(feederName, status, logs) {
         '<b>Recent logs</b><br>';
 
     if (feederName == 'bpb-low') {
-        logs = new Array();
+        logs = [];
         logs.push({timestamp: "10/5/2018-10:44:53", birdname: "Apollo"});
         logs.push({timestamp: "10/5/2018-10:45:10", birdname: "Apollo"});
         for(var index in logs) {
@@ -91,14 +91,14 @@ function getFormattedPopupContent(feederName, status, logs) {
         }
     }
     else if (feederName == 'bpb-medium') {
-        logs = new Array();
+        logs = [];
         logs.push({timestamp: "10/5/2018-12:37:0", birdname: "Apollo"});
         for(var index in logs) {
             content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
         }
     }
     else if (feederName == 'bpb-high') {
-        logs = new Array();
+        logs = [];
         logs.push({timestamp: "10/5/2018-12:26:10", birdname: "Apollo"});
         for(var index in logs) {
             content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
