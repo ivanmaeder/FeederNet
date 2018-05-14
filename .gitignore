@@ -70,3 +70,6 @@ typings/
 
 # AWS Credentials
 awscredentials.json
+
+# ENV files
+env.list

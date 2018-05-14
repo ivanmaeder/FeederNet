@@ -70,8 +70,8 @@ function getFeeders(socket) {
                         break;
                     }
                 }
-                callback(null, data);
             }
+            callback(null, data);
         },
         function (data, callback) {
             // Get feeder logs
@@ -91,9 +91,9 @@ function getFeeders(socket) {
                             data[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
                         }
                     }
-                    callback(dberr, data);
                 });
             }
+            callback(dberr, data);
         },
         function (data, callback) {
             socket.emit('updateFeeders', data);
