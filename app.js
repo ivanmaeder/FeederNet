@@ -6,7 +6,8 @@ var app = express();
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
-var mysqlConnection = mysql.createConnection({
+var mysql_pool = mysql.createPool({
+    connectionLimit: 3,
     host: process.env.RDS_HOSTNAME,
     user: process.env.RDS_USERNAME,
     password: process.env.RDS_PASSWORD,
@@ -17,14 +18,9 @@ var mysqlConnection = mysql.createConnection({
 // Connected feeder array
 var connectedFeeders = [];
 
-// Connect to MySQL database
-mysqlConnection.connect(function(err) {
-    if (err) {
-        console.log("ERROR: Database connection failed: " + err.stack);
-        return;
-    }
-    console.log("INFO: Connected to database.");
-    mysqlConnection.query("SHOW TABLES", function (err, result) {
+// Connect to MySQL database and read tables
+mysql_pool.getConnection(function(err, connection) {
+    connection.query("SHOW TABLES", function (err, result) {
         if (err) {
             console.log("ERROR: Could not show tables.");
             console.log(err);
@@ -32,18 +28,22 @@ mysqlConnection.connect(function(err) {
         }
         console.log(result);
     });
+    connection.release();
 });
 
-
+// Insert new track into database
 function logTrack(name, timedate, rfid) {
     var sql = "INSERT INTO log (feedername, timedate, rfid) VALUES(\"" + name + "\",\"" + timedate + "\",\"" + rfid + "\");";
-    mysqlConnection.query(sql, function (err, result) {
-        if (err) {
-            console.log("ERROR: SQL insertion failed.");
-            console.log(err);
-            return;
-        }
-        console.log("INFO: Inserted: " + result.affectedRows);
+    mysql_pool.getConnection(function(err, connection) {
+        connection.query(sql, function (err, result) {
+            if (err) {
+                console.log("ERROR: SQL insertion failed.");
+                console.log(err);
+                return;
+            }
+            console.log("INFO: Inserted: " + result.affectedRows);
+        });
+        connection.release();
     });
 }
 
@@ -52,12 +52,16 @@ function getFeeders(socket) {
         function (callback) {
             // Get feeder table from database.
             var getFeedersSQL = "SELECT * FROM feeders";
-            mysqlConnection.query(getFeedersSQL, function (dberr, feederData) {
-                if (dberr) {
-                    console.log("ERROR: Failed to get feeders.");
-                    console.log(dberr);
-                }
-                callback(dberr, feederData);
+            mysql_pool.getConnection(function(err, connection) {
+                connection.query(getFeedersSQL, function (dberr, feederData) {
+                    if (dberr) {
+                        console.log("ERROR: Failed to get feeders.");
+                        console.log(dberr);
+                    }
+                    console.log("INFO: Retrieved feeder data from database.");
+                    callback(dberr, feederData);
+                });
+                connection.release();
             });
         },
         function (data, callback) {
@@ -69,36 +73,40 @@ function getFeeders(socket) {
                         data[index].connectionStatus = "Online";
                         break;
                     }
-                    if (index == data.length - 1 && connIndex == data.length -1) {
-                        callback(null, data);
-                    }
+                }
+                if (index == data.length - 1) {
+                    console.log("INFO: Processed connection statuses.");
+                    callback(null, data);
                 }
             }
         },
         function (data, callback) {
             // Get feeder logs
             for (let index in data) {
-                mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
+
+                mysql_pool.getConnection(function(err, connection) {
+                    connection.query("SELECT * FROM log WHERE feedername='" +
                     data[index].feedername + "'", function (dberr, feederLogs)
-                {
-                    if (dberr) {
-                        console.log("ERROR: Failed to get feeder logs.");
-                        console.log(dberr);
-                        callback(dberr, data);
-                    }
-                    else {
-                        data[index].recentLog = [];
-                        console.log("INFO: Feeder " + data[index].feedername + " logs:");
-                        console.log(feederLogs);
-                        for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
-                            console.log("INFO: Feeder " + data[index].feedername + " log: " +
+                    {
+                        if (dberr) {
+                            console.log("ERROR: Failed to get feeder logs.");
+                            console.log(dberr);
+                            callback(dberr, data);
+                        }
+                        else {
+                            data[index].recentLog = [];
+                            for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
+                                console.log("INFO: Feeder " + data[index].feedername + " log: " +
                                 feederLogs[logIndex].timedate);
-                            data[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
-                            if (index == data.length - 1 && logIndex == feederLogs.length - 1) {
+                                data[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
+                            }
+                            if (index == data.length - 1) {
+                                console.log("INFO: Processed feeder logs.");
                                 callback(null, data);
                             }
                         }
-                    }
+                    });
+                    connection.release();
                 });
             }
         },
@@ -122,8 +130,8 @@ Get feeder routine
 
 - Get feeder table from database
 - Iterate through each feeder
-    * Check feeder connection status
-    * Get feeder logs
+* Check feeder connection status
+* Get feeder logs
 - Send data object to client
 
 */

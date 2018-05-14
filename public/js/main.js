@@ -20,7 +20,7 @@ json data Array
 */
 
 $(document).ready(function() {
-    socket = io.connect('http://irs-feedernet.eu-west-1.elasticbeanstalk.com/');
+    socket = io.connect();
     setupMap();
     getFeeders();
     requestData();
@@ -52,16 +52,14 @@ function requestData() {
 function insertMarkers(data) {
     for(var index in data) {
         console.log("Feeder name: " + data[index].feedername + " | Lat: " + data[index].lat + " | Lon: " + data[index].lon);
-        addMarker(data[index].lat, data[index].lon, data[index].feedername, data[index].connectionStatus);
+        addMarker(data[index].lat, data[index].lon, data[index].feedername, data[index].connectionStatus, data[index].recentLog);
     }
     console.log(data);
 }
 
-function addMarker(lat, lon, feederName, connStatus) {
-    var popupContent =
-        '<b>' + feederName + '</b><br>' +
-        '<b><span style="color: "';
-    var marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map).on('click', onMarkerClick).bindPopup(getFormattedPopupContent(feederName, connStatus, null));
+function addMarker(lat, lon, feederName, connStatus, logs) {
+    var marker = L.marker([parseFloat(lat), parseFloat(lon)]).addTo(map).on('click',
+        onMarkerClick).bindPopup(getFormattedPopupContent(feederName, connStatus, logs));
     markers.push(marker);
 }
 
@@ -82,30 +80,15 @@ function getFormattedPopupContent(feederName, status, logs) {
         '<b>Status</b><br><span style="color: ' + colour + ';">' + status + '</span><br><br>' +
         '<b>Recent logs</b><br>';
 
-    if (feederName == 'bpb-low') {
-        logs = [];
-        logs.push({timestamp: "10/5/2018-10:44:53", birdname: "Apollo"});
-        logs.push({timestamp: "10/5/2018-10:45:10", birdname: "Apollo"});
-        for(var index in logs) {
-            content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
-        }
-    }
-    else if (feederName == 'bpb-medium') {
-        logs = [];
-        logs.push({timestamp: "10/5/2018-12:37:0", birdname: "Apollo"});
-        for(var index in logs) {
-            content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
-        }
-    }
-    else if (feederName == 'bpb-high') {
-        logs = [];
-        logs.push({timestamp: "10/5/2018-12:26:10", birdname: "Apollo"});
-        for(var index in logs) {
-            content += logs[index].timestamp + ' ' + logs[index].birdname + '</b><br>';
+    if (logs.length > 0) {
+        for (var index in logs) {
+            console.log("INFO: Timestamp: " + logs[index].timestamp);
+            content += logs[index].timedate + ' ' + logs[index].birdname + '</b><br>';
         }
     }
     else {
         content += 'No tracks yet.';
     }
+
     return content;
 }
