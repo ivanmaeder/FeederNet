@@ -69,13 +69,14 @@ function getFeeders(socket) {
                         data[index].connectionStatus = "Online";
                         break;
                     }
+                    if (index == data.length - 1 && connIndex == data.length -1) {
+                        callback(null, data);
+                    }
                 }
             }
-            callback(null, data);
         },
         function (data, callback) {
             // Get feeder logs
-            let err = null;
             for (let index in data) {
                 mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
                     data[index].feedername + "'", function (dberr, feederLogs)
@@ -83,7 +84,7 @@ function getFeeders(socket) {
                     if (dberr) {
                         console.log("ERROR: Failed to get feeder logs.");
                         console.log(dberr);
-                        err = dberr;
+                        callback(dberr, data);
                     }
                     else {
                         data[index].recentLog = [];
@@ -93,11 +94,13 @@ function getFeeders(socket) {
                             console.log("INFO: Feeder " + data[index].feedername + " log: " +
                                 feederLogs[logIndex].timedate);
                             data[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
+                            if (index == data.length - 1 && logIndex == feederLogs.length - 1) {
+                                callback(null, data);
+                            }
                         }
                     }
                 });
             }
-            callback(err, data);
         },
         function (data, callback) {
             socket.emit('updateFeeders', data);
