@@ -75,6 +75,7 @@ function getFeeders(socket) {
         },
         function (data, callback) {
             // Get feeder logs
+            let err = null;
             for (let index in data) {
                 mysqlConnection.query("SELECT * FROM log WHERE feedername='" +
                     data[index].feedername + "'", function (dberr, feederLogs)
@@ -82,6 +83,7 @@ function getFeeders(socket) {
                     if (dberr) {
                         console.log("ERROR: Failed to get feeder logs.");
                         console.log(dberr);
+                        err = dberr;
                     }
                     else {
                         data[index].recentLog = [];
@@ -93,7 +95,7 @@ function getFeeders(socket) {
                     }
                 });
             }
-            callback(dberr, data);
+            callback(err, data);
         },
         function (data, callback) {
             socket.emit('updateFeeders', data);
