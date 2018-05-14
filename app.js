@@ -90,6 +90,8 @@ function getFeeders(socket) {
                         console.log("INFO: Feeder " + data[index].feedername + " logs:");
                         console.log(feederLogs);
                         for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
+                            console.log("INFO: Feeder " + data[index].feedername + " log: " +
+                                feederLogs[logIndex].timedate);
                             data[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
                         }
                     }
@@ -99,6 +101,8 @@ function getFeeders(socket) {
         },
         function (data, callback) {
             socket.emit('updateFeeders', data);
+            console.log("INFO: Resulting data object: ");
+            console.log(data);
             callback(null, data);
         }
     ], function (err) {
