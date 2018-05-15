@@ -12,9 +12,9 @@ module.exports = function(grunt) {
             tasks: ['jshint']
         },
         exec: {
-            kill_docker: {
-                command: 'docker kill $(docker ps -q)'
-            },
+            // kill_docker: {
+            //     command: 'docker stop $(docker ps -q)'
+            // },
             build_docker: {
                 command: 'docker build -t feedernet .'
             },
