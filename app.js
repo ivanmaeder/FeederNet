@@ -98,7 +98,7 @@ function getFeeders(socket) {
                             for (var logIndex = 0; logIndex < feederLogs.length; ++logIndex) {
                                 console.log("INFO: Feeder " + data[index].feedername + " log: " +
                                 feederLogs[logIndex].timedate);
-                                data[index].recentLog.push({timedate: feederLogs[logIndex].timedate});
+                                data[index].recentLog.push({timedate: feederLogs[logIndex].timedate, rfid: feederLogs[logIndex].rfid});
                             }
                             if (index == data.length - 1) {
                                 console.log("INFO: Processed feeder logs.");
