@@ -83,7 +83,7 @@ function getFormattedPopupContent(feederName, status, logs) {
     if (logs.length > 0) {
         for (var index in logs) {
             console.log("INFO: Timestamp: " + logs[index].timestamp);
-            content += logs[index].timedate + ' ' + logs[index].birdname + '</b><br>';
+            content += logs[index].timedate + ' ' + logs[index].rfid + '</b><br>';
         }
     }
     else {
