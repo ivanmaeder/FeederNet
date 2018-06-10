@@ -86,7 +86,7 @@ function getFeeders(socket) {
 
                 mysql_pool.getConnection(function(err, connection) {
                     connection.query("SELECT * FROM log WHERE feedername='" +
-                    data[index].feedername + "'", function (dberr, feederLogs)
+                    data[index].feedername + "' ORDER BY id DESC", function (dberr, feederLogs)
                     {
                         if (dberr) {
                             console.log("ERROR: Failed to get feeder logs.");
