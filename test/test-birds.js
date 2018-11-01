@@ -13,7 +13,7 @@ const Bird = require('../server/models/bird');
 var should = chai.should();
 chai.use(chaiHttp);
 
-describe('Birds', () => {
+describe('Route - Birds', () => {
 
     beforeEach((done) => {
         var newBird = new Bird({
