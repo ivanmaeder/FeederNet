@@ -7,13 +7,13 @@ const http = require('http');
 const mongoose = require('mongoose');
 
 // Routes
-const routes = require('./routes/index.js');
+const birds = require('./routes/birds.js');
 
 // Express instance
 var app = express();
 
 // Mongoose
-mongoose.connect('mongodb://localhost/node-testing', (err, res) => {
+mongoose.connect('mongodb://localhost/node-testing', {useNewUrlParser: true}, (err, res) => {
   if(err) {
     console.log('Error connecting to the database. ' + err);
   } else {
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 // Main routes
-app.use('/', routes);
+app.use('/', birds);
 
 // Server configuration
 var server = http.createServer(app);

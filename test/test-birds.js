@@ -15,8 +15,6 @@ chai.use(chaiHttp);
 
 describe('Birds', () => {
 
-    Bird.collection.drop();
-
     beforeEach((done) => {
         var newBird = new Bird({
             rfid: 'test-rfid-number',
@@ -110,23 +108,26 @@ describe('Birds', () => {
                     });
             });
     });
+
     it('should delete a single bird on /bird/<id> DELETE', (done) => {
-        chai.request(server)
-            .get('/birds')
-            .end((err, res) => {
-                chai.request(server)
-                    .delete('/bird/' + res.body[0]._id)
-                    .end((error, response) => {
-                        response.should.have.status(200);
-                        response.should.be.json;
-                        response.body.should.be.a('object');
-                        response.body.should.have.property('REMOVED');
-                        response.body.REMOVED.should.be.a('object');
-                        response.body.REMOVED.should.have.property('name');
-                        response.body.REMOVED.should.have.property('_id');
-                        response.body.REMOVED.name.should.equal('test-name');
-                        done();
-                    });
-            });
+        var newBird = new Bird({
+            rfid: 'del-test-rfid-number',
+            name: 'del-test-name'
+        });
+        newBird.save((err, data) => {
+            chai.request(server)
+                .delete('/bird/' + data.id)
+                .end((error, response) => {
+                    response.should.have.status(200);
+                    response.should.be.json;
+                    response.body.should.be.a('object');
+                    response.body.should.have.property('REMOVED');
+                    response.body.REMOVED.should.be.a('object');
+                    response.body.REMOVED.should.have.property('name');
+                    response.body.REMOVED.should.have.property('_id');
+                    response.body.REMOVED.name.should.equal('del-test-name');
+                    done();
+                });
+        });
     });
 });
