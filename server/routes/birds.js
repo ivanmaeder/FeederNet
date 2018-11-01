@@ -54,8 +54,8 @@ function addBird(req, res) {
 // Update bird
 function updateBird(req, res) {
     Bird.findById(req.params.id, (err, bird) => {
-        bird.rfid = req.body.rfid;
-        bird.name = req.body.name;
+        if (req.body.rfid) bird.rfid = req.body.rfid;
+        if (req.body.name) bird.name = req.body.name;
         bird.save((err) => {
             if (err) {
                 res.json({'ERROR': err});

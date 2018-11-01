@@ -89,24 +89,28 @@ describe('Birds', () => {
     });
 
     it('should update a single bird on /bird/<id> PUT', (done) => {
-        chai.request(server)
-            .get('/api/birds')
-            .end((err, res) => {
-                chai.request(server)
-                    .put('/api/bird/' + res.body[0]._id)
-                    .send({'name': 'update-test-name'})
-                    .end((error, response) => {
-                        response.should.have.status(200);
-                        response.should.be.json;
-                        response.body.should.be.a('object');
-                        response.body.should.have.property('UPDATED');
-                        response.body.UPDATED.should.be.a('object');
-                        response.body.UPDATED.should.have.property('name');
-                        response.body.UPDATED.should.have.property('_id');
-                        response.body.UPDATED.name.should.equal('update-test-name');
-                        done();
-                    });
-            });
+        var newBird = new Bird({
+            rfid: 'update-test-rfid-number',
+            name: 'update-test-name'
+        });
+        newBird.save((err, data) => {
+            chai.request(server)
+                .put('/api/bird/' + data.id)
+                .send({'name': 'updated-test-name'})
+                .end((error, response) => {
+                    response.should.have.status(200);
+                    response.should.be.json;
+                    response.body.should.be.a('object');
+                    response.body.should.have.property('UPDATED');
+                    response.body.UPDATED.should.be.a('object');
+                    response.body.UPDATED.should.have.property('rfid');
+                    response.body.UPDATED.should.have.property('name');
+                    response.body.UPDATED.should.have.property('_id');
+                    response.body.UPDATED.rfid.should.equal('update-test-rfid-number');
+                    response.body.UPDATED.name.should.equal('updated-test-name');
+                    done();
+                });
+        });
     });
 
     it('should delete a single bird on /bird/<id> DELETE', (done) => {
