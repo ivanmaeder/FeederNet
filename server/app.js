@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 
 // Routes
 const birds = require('./routes/birds.js');
+const feeders = require('./routes/feeders.js');
 
 // Express instance
 var app = express();
@@ -29,6 +30,7 @@ app.use(cookieParser());
 
 // Main routes
 app.use('/api/', birds);
+app.use('/api/', feeders);
 
 // Server configuration
 var server = http.createServer(app);

@@ -67,17 +67,19 @@ function updateFeeder(req, res) {
 
 // Delete feeder
 function deleteFeeder(req, res) {
-    Feeder.findById(req.params.id, (err, bird) => {
+    Feeder.findById(req.params.id, (err, feeder) => {
         if (err) {
             res.json({'ERROR': err});
         } else {
-            bird.remove((err) => {
+            feeder.remove((err) => {
                 if (err) {
                     res.json({'ERROR': err});
                 } else {
-                    res.json({'REMOVED': bird});
+                    res.json({'REMOVED': feeder});
                 }
             });
         }
     });
 }
+
+module.exports = router;
