@@ -32,7 +32,7 @@ describe('Birds', () => {
 
     it('should list all birds on /birds GET', (done) => {
         chai.request(server)
-            .get('/birds')
+            .get('/api/birds')
             .end((err, res) => {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -53,7 +53,7 @@ describe('Birds', () => {
         });
         newBird.save((err, data) => {
             chai.request(server)
-                .get('/bird/' + data.id)
+                .get('/api/bird/' + data.id)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -71,7 +71,7 @@ describe('Birds', () => {
 
     it('should add a single bird on /birds POST', (done) => {
         chai.request(server)
-            .post('/birds')
+            .post('/api/birds')
             .send({'rfid': 'post-test-rfid-number', 'name': 'post-test-name'})
             .end((err, res) => {
                 res.should.have.status(200);
@@ -90,10 +90,10 @@ describe('Birds', () => {
 
     it('should update a single bird on /bird/<id> PUT', (done) => {
         chai.request(server)
-            .get('/birds')
+            .get('/api/birds')
             .end((err, res) => {
                 chai.request(server)
-                    .put('/bird/' + res.body[0]._id)
+                    .put('/api/bird/' + res.body[0]._id)
                     .send({'name': 'update-test-name'})
                     .end((error, response) => {
                         response.should.have.status(200);
@@ -116,7 +116,7 @@ describe('Birds', () => {
         });
         newBird.save((err, data) => {
             chai.request(server)
-                .delete('/bird/' + data.id)
+                .delete('/api/bird/' + data.id)
                 .end((error, response) => {
                     response.should.have.status(200);
                     response.should.be.json;

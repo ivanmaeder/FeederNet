@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 // Main routes
-app.use('/', birds);
+app.use('/api/', birds);
 
 // Server configuration
 var server = http.createServer(app);
