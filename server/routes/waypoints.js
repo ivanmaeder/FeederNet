@@ -5,7 +5,7 @@ var Waypoint = require('../models/waypoint');
 // API routes
 router.get('/waypoints', findAllWaypoints);
 router.get('/waypoint/:id', findWaypointById);
-//router.post('/waypoints', addWaypoint);
+router.post('/waypoints', addWaypoint);
 //router.delete('/waypoint/:id', deleteWaypoint);
 
 // Get all waypoints

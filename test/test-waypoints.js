@@ -90,7 +90,6 @@ describe('Route - Waypoints', () => {
                 chai.request(server)
                     .get('/api/waypoint/' + res.body[0]._id)
                     .end((_err, _res) => {
-                        console.log(_res.body);
                         _res.should.have.status(200);
                         _res.should.be.json;
                         _res.body.should.be.a('object');
@@ -111,4 +110,45 @@ describe('Route - Waypoints', () => {
                     });
             });
     });
+
+    it('should add a single waypoint on /waypoints GET', (done) => {
+        var newBird = new Bird({
+            rfid: 'post-test-rfid-number',
+            name: 'post-test-name'
+        });
+        var newFeeder = new Feeder({
+            stub: 'post-test-feeder-stub',
+            name: 'post-test-feeder-name',
+            location: {
+                latitude: '1.0000',
+                longitude: '1.0000'
+            },
+            lastPing: 'never'
+        });
+        // Save data
+        newBird.save((err, bird_data) => {
+            newFeeder.save((_err, feeder_data) => {
+                chai.request(server)
+                    .post('/api/waypoints')
+                    .send({
+                        'datetime': 'post-test-datetime',
+                        'bird_id': bird_data.id,
+                        'feeder_id': feeder_data.id
+                    })
+                    .end((error, res) => {
+                        res.should.have.status(200);
+                        res.should.be.json;
+                        res.body.should.be.a('object');
+                        res.body.should.have.property('SUCCESS');
+                        res.body.SUCCESS.should.be.a('object');
+                        res.body.SUCCESS.should.have.property('datetime');
+                        res.body.SUCCESS.should.have.property('bird');
+                        res.body.SUCCESS.should.have.property('feeder');
+                        res.body.SUCCESS.should.have.property('_id');
+                        done();
+                    });
+            });
+        });
+    });
+
 });
