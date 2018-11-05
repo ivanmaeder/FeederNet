@@ -11,4 +11,4 @@ var feederSchema = new Schema({
     lastPing: String
 });
 
-module.exports = mongoose.model('feeders', feederSchema);
+module.exports = mongoose.model('feeder', feederSchema);

@@ -4,11 +4,11 @@ var Schema = mongoose.Schema;
 var waypointSchema = new Schema({
     bird: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Bird'
+        ref: 'bird'
     },
     feeder: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Feeder'
+        ref: 'feeder'
     },
     datetime: String
 });

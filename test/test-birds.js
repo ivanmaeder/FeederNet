@@ -40,8 +40,6 @@ describe('Route - Birds', () => {
                 res.body[0].should.have.property('_id');
                 res.body[0].should.have.property('rfid');
                 res.body[0].should.have.property('name');
-                res.body[0].rfid.should.equal('test-rfid-number');
-                res.body[0].name.should.equal('test-name');
                 done();
             });
     });

@@ -6,4 +6,4 @@ var birdSchema = new Schema({
     name: String
 });
 
-module.exports = mongoose.model('birds', birdSchema);
+module.exports = mongoose.model('bird', birdSchema);
