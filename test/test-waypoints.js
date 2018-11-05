@@ -52,9 +52,6 @@ describe('Route - Waypoints', () => {
                 });
             });
         });
-        // newWaypoint.save((err) => {
-        //     done();
-        // });
     });
 
     afterEach((done) => {
@@ -83,6 +80,35 @@ describe('Route - Waypoints', () => {
                 res.body[0].feeder.should.have.property('location');
                 res.body[0].feeder.should.have.property('lastPing');
                 done();
+            });
+    });
+
+    it('should list a single waypoint on /waypoint/<id> GET', (done) => {
+        chai.request(server)
+            .get('/api/waypoints')
+            .end((err, res) => {
+                chai.request(server)
+                    .get('/api/waypoint/' + res.body[0]._id)
+                    .end((_err, _res) => {
+                        console.log(_res.body);
+                        _res.should.have.status(200);
+                        _res.should.be.json;
+                        _res.body.should.be.a('object');
+                        _res.body.should.have.property('_id');
+                        _res.body.should.have.property('datetime');
+                        _res.body.should.have.property('bird');
+                        _res.body.should.have.property('feeder');
+                        _res.body.datetime.should.equal('test-date-time');
+                        _res.body.bird.should.be.a('object');
+                        _res.body.bird.should.have.property('rfid');
+                        _res.body.bird.should.have.property('name');
+                        _res.body.feeder.should.be.a('object');
+                        _res.body.feeder.should.have.property('stub');
+                        _res.body.feeder.should.have.property('name');
+                        _res.body.feeder.should.have.property('location');
+                        _res.body.feeder.should.have.property('lastPing');
+                        done();
+                    });
             });
     });
 });

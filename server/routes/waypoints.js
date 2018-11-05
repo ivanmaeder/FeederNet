@@ -4,7 +4,7 @@ var Waypoint = require('../models/waypoint');
 
 // API routes
 router.get('/waypoints', findAllWaypoints);
-//router.get('/waypoint/:id', findWaypointById);
+router.get('/waypoint/:id', findWaypointById);
 //router.post('/waypoints', addWaypoint);
 //router.delete('/waypoint/:id', deleteWaypoint);
 
@@ -24,9 +24,10 @@ function findAllWaypoints(req, res) {
 
 // Get single waypoint
 function findWaypointById(req, res) {
-    Waypoint.findById(req.params.id).
-    populate('bird').
-    populate('feeder').exec((err, waypoint) => {
+    Waypoint.findById(req.params.id)
+    .populate('bird')
+    .populate('feeder')
+    .exec((err, waypoint) => {
         if (err) {
             res.json({'ERROR': err});
         } else {
