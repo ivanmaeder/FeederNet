@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost/node-testing', {useNewUrlParser: true}, (e
   } else {
     console.log('Connected to Database!');
   }
-})
+});
 
 // Config middleware
 app.use(logger('dev'));

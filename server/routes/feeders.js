@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var Feeder = require('../models/feeder')
+var Feeder = require('../models/feeder');
 
 // API routes
 router.get('/feeders', findAllFeeders);
