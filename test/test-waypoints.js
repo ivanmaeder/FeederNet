@@ -151,4 +151,25 @@ describe('Route - Waypoints', () => {
         });
     });
 
+    it('should delete a single waypoint on /waypoint/<id> DELETE', (done) => {
+        chai.request(server)
+            .get('/api/waypoints')
+            .end((err, res) => {
+                chai.request(server)
+                    .delete('/api/waypoint/' + res.body[0]._id)
+                    .end((_err, _res) => {
+                        _res.should.have.status(200);
+                        _res.should.be.json;
+                        _res.body.should.be.a('object');
+                        _res.body.should.have.property('REMOVED');
+                        _res.body.REMOVED.should.be.a('object');
+                        _res.body.REMOVED.should.have.property('datetime');
+                        _res.body.REMOVED.should.have.property('bird');
+                        _res.body.REMOVED.should.have.property('feeder');
+                        _res.body.REMOVED.should.have.property('_id');
+                        done();
+                    });
+            });
+    });
+
 });

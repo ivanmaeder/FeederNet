@@ -6,7 +6,7 @@ var Waypoint = require('../models/waypoint');
 router.get('/waypoints', findAllWaypoints);
 router.get('/waypoint/:id', findWaypointById);
 router.post('/waypoints', addWaypoint);
-//router.delete('/waypoint/:id', deleteWaypoint);
+router.delete('/waypoint/:id', deleteWaypoint);
 
 // Get all waypoints
 function findAllWaypoints(req, res) {
