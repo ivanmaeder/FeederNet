@@ -26,7 +26,15 @@ describe('Route - Birds', () => {
     });
 
     afterEach((done) => {
-        Bird.collection.drop();
+        try {
+            Bird.collection.drop();
+        } catch (e) {
+            if (e.code === 26) {
+                console.log('namespace %s not found', Bird.collection.name);
+            } else {
+                throw e;
+            }
+        }
         done();
     });
 

@@ -20,6 +20,7 @@ const birds = require('./routes/birds.js');
 const feeders = require('./routes/feeders.js');
 const events = require('./routes/events.js');
 const waypoints = require('./routes/waypoints.js');
+const recordTrack = require('./routes/recordTrack.js');
 
 // Express instance
 var app = express();
@@ -35,6 +36,7 @@ app.use('/api/', birds);
 app.use('/api/', feeders);
 app.use('/api/', events);
 app.use('/api/', waypoints);
+app.use('/api/', recordTrack);
 
 // Server configuration
 var server = http.createServer(app);

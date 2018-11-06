@@ -32,7 +32,15 @@ describe('Route - Feeders', () => {
     });
 
     afterEach((done) => {
-        Feeder.collection.drop();
+        try {
+            Feeder.collection.drop();
+        } catch (e) {
+            if (e.code === 26) {
+                console.log('namespace %s not found', Feeder.collection.name);
+            } else {
+                throw e;
+            }
+        };
         done();
     });
 
@@ -48,8 +56,6 @@ describe('Route - Feeders', () => {
                 res.body[0].should.have.property('name');
                 res.body[0].should.have.property('location');
                 res.body[0].should.have.property('lastPing');
-                res.body[0].stub.should.equal('feeder-stub');
-                res.body[0].name.should.equal('feeder-name');
                 res.body[0].location.should.be.a('object');
                 res.body[0].location.should.have.property('latitude');
                 res.body[0].location.should.have.property('longitude');

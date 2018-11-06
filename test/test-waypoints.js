@@ -44,9 +44,9 @@ describe('Route - Waypoints', () => {
         newBird.save((err, bird_data) => {
             newFeeder.save((err, feeder_data) => {
                 newWaypoint.save((err, waypoint) => {
-                    return waypoint.addBird(bird_data.id).then((_waypoint) => {
-                        return _waypoint.addFeeder(feeder_data.id).then((__waypoint) => {
-                            return done();
+                    waypoint.addBird(bird_data.id).then((_waypoint) => {
+                        _waypoint.addFeeder(feeder_data.id).then((__waypoint) => {
+                            done();
                         });
                     });
                 });
@@ -55,7 +55,17 @@ describe('Route - Waypoints', () => {
     });
 
     afterEach((done) => {
-        Waypoint.collection.drop();
+        for (let model of [Bird, Feeder, Waypoint]) {
+            try {
+                model.collection.drop();
+            } catch (e) {
+                if (e.code === 26) {
+                    console.log('namespace %s not found', model.collection.name);
+                } else {
+                    throw e;
+                }
+            }
+        }
         done();
     });
 
