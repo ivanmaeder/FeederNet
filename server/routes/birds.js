@@ -4,7 +4,7 @@ var Bird = require('../models/bird');
 
 router.get('/', (req, res, next) => {
     console.log('INFO: GET root.');
-    res.send('Hello world.');
+    res.json({'SUCCESS': 'Hello world.'});
 });
 
 // API routes

@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const mongoose = require('mongoose');
 
+const port = process.env.PORT || 5000;
+
 // Mongoose
 mongoose.connect('mongodb://localhost/node-testing', {useNewUrlParser: true}, (err, res) => {
   if(err) {
@@ -40,7 +42,7 @@ app.use('/api/', recordTrack);
 
 // Server configuration
 var server = http.createServer(app);
-server.listen(3000, () => {
+server.listen(port, () => {
     console.log('INFO: Server started.');
 });
 
