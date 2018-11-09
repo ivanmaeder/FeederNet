@@ -2,6 +2,10 @@
   "name": "feedernet",
   "version": "2.0.0",
   "description": "RFID Feeder Server",
+  "engines": {
+    "node": "11.0.0",
+    "yarn": "1.12.1"
+  }
   "main": "app.js",
   "dependencies": {
     "body-parser": "^1.18.3",
