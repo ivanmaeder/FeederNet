@@ -20,6 +20,7 @@
     "grunt-exec": "^3.0.0"
   },
   "scripts": {
+    "start": "node ./server/app",
     "server": "node ./server/app",
     "client": "cd feedernet-client && npm start",
     "test": "mocha",

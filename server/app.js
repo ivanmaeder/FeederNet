@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const port = process.env.PORT || 5000;
 
 // Mongoose
-mongoose.connect('mongodb://localhost/node-testing', {useNewUrlParser: true}, (err, res) => {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/node-testing', {useNewUrlParser: true}, (err, res) => {
   if(err) {
     console.log('Error connecting to the database. ' + err);
   } else {
