@@ -11,6 +11,8 @@ class Map extends Component {
     return (
       <Mapbox
         style="mapbox://styles/mapbox/streets-v9"
+        center={[-1.162559, 53.038313]}
+        zoom={[18]}
         containerStyle={{
           height: '100vh',
           width: '100vw'

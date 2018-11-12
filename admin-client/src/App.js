@@ -1,0 +1,42 @@
+import React, { Component } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import Birds from './views/birds';
+import './App.css';
+
+class App extends Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.handleSelect = this.handleSelect.bind(this);
+
+    this.state = {
+      key: 1
+    };
+  }
+
+  handleSelect(key) {
+    this.setState({key});
+  }
+
+  render() {
+    return (
+      <div id="App">
+        <h1>FeederNet Admin</h1>
+        <Tabs
+          activeKey={this.state.key}
+          onSelect={this.handleSelect}
+          id="main-tabs"
+        >
+          <Tab eventKey={1} title="Birds">
+            <Birds/>
+          </Tab>
+          <Tab eventKey={2} title="Feeders">
+            <p>Feeders</p>
+          </Tab>
+        </Tabs>
+      </div>
+    );
+  }
+}
+
+export default App;

@@ -4,7 +4,7 @@
   "description": "RFID Feeder Server",
   "engines": {
     "node": "11.0.0",
-    "yarn": "1.12.1"
+    "yarn": "1.12.3"
   },
   "main": "app.js",
   "dependencies": {
@@ -27,8 +27,10 @@
     "start": "node ./server/app",
     "server": "node ./server/app",
     "client": "cd feedernet-client && npm start",
+    "admin-client": "cd admin-client && npm start",
     "test": "mocha",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "admin-dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn admin-client\""
   },
   "repository": {
     "type": "git",
