@@ -20,8 +20,9 @@ class App extends Component {
 
   render() {
     return (
-      <div id="App">
+      <div id="App" className="container">
         <h1>FeederNet Admin</h1>
+        <br/>
         <Tabs
           activeKey={this.state.key}
           onSelect={this.handleSelect}
