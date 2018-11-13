@@ -23,6 +23,7 @@ const feeders = require('./routes/feeders.js');
 const events = require('./routes/events.js');
 const waypoints = require('./routes/waypoints.js');
 const recordTrack = require('./routes/recordTrack.js');
+const admin = require('./routes/admin.js');
 
 // Express instance
 var app = express();
@@ -39,6 +40,7 @@ app.use('/api/', feeders);
 app.use('/api/', events);
 app.use('/api/', waypoints);
 app.use('/api/', recordTrack);
+app.use('/admin/', admin);
 
 // Server configuration
 var server = http.createServer(app);
