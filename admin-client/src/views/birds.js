@@ -1,31 +1,22 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import BirdForm from './bird-form';
+import BirdTable from './bird-table';
 
 class Birds extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      getTest: "",
-      birds: []
+      getTest: ""
     };
-  }
-
-  componentDidMount() {
-    axios.get('/api')
-      .then(response => {
-        this.setState({getTest: response.data.SUCCESS});
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 
   render() {
     return(
       <div>
-        <h2>{this.state.getTest}</h2>
+        <br/>
         <BirdForm/>
+        <br/>
+        <BirdTable/>
       </div>
     );
   }

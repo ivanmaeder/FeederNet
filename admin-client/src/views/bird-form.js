@@ -18,11 +18,9 @@ class BirdForm extends Component {
 
   // Handle form changes
   handleRfidChange(e) {
-    console.log(e.target.value);
     this.setState({ birdRfid: e.target.value });
   }
   handleNameChange(e) {
-    console.log(e.target.value);
     this.setState({ birdName: e.target.value });
   }
 
@@ -51,7 +49,7 @@ class BirdForm extends Component {
     return(
       <form>
         <Row>
-          <Col md={6}>
+          <Col sm={6}>
             <FormGroup controlId="birdName">
               <ControlLabel>Bird name</ControlLabel>
               <FormControl
@@ -62,7 +60,7 @@ class BirdForm extends Component {
                 />
             </FormGroup>
           </Col>
-          <Col md={6}>
+          <Col sm={6}>
             <FormGroup controlId="birdRfid">
               <ControlLabel>RFID tag</ControlLabel>
               <FormControl

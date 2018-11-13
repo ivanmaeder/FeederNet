@@ -68,6 +68,7 @@ function updateBird(req, res) {
 
 // Delete bird
 function deleteBird(req, res) {
+    console.log("INFO: DELETE request received with param: " + req.params.id);
     Bird.findById(req.params.id, (err, bird) => {
         if (err) {
             res.json({'ERROR': err});
