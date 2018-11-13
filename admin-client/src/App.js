@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 import Birds from './views/birds';
 import Feeders from './views/feeders';
+import EventTable from './views/event-table';
 import './App.css';
 
 class App extends Component {
@@ -34,6 +35,9 @@ class App extends Component {
           </Tab>
           <Tab eventKey={2} title="Feeders">
             <Feeders/>
+          </Tab>
+          <Tab eventKey={3} title="Events">
+            <EventTable/>
           </Tab>
         </Tabs>
       </div>
