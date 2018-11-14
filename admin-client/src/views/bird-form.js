@@ -27,12 +27,17 @@ class BirdForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    this.props.addBird(this.state.birdName, this.state.birdRfid);
+    this.props.addBird(this.state.birdName, this.state.birdRfid, (error) => {
+      if (error) {
+        //...
+        return //returning early to avoid an `else` for the rest of the function
+      }
 
-    this.setState({
-      birdName: '',
-      birdRfid: ''
-    }) ////////////TODO only do this if it works
+      this.setState({
+        birdName: '',
+        birdRfid: ''
+      })
+    });
   }
 
   render() {

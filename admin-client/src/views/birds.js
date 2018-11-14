@@ -8,7 +8,7 @@ class Birds extends Component {
     super(props);
 
     this.state = {
-      getTest: "", //TODO ?
+      getTest: "", //?
       birds: []
     };
 
@@ -32,9 +32,9 @@ class Birds extends Component {
       });
   }
 
-  addBird(name, rfid) {
+  addBird(name, rfid, callback) {
     const postData = {
-      name: name, //TODO you can also simply write `name,` and `rfid` below, and nothing else (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#New_notations_in_ECMAScript_2015)
+      name: name, //you can also simply write `name,` and `rfid` below, and nothing else (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#New_notations_in_ECMAScript_2015)
       rfid: rfid
     }
 
@@ -42,9 +42,11 @@ class Birds extends Component {
       .then(res => {
         console.log(res.data);
         this.getBirds();
+        callback(null); //in Node the 1st param is usually the error. No error here
       })
       .catch((error) => {
         console.log(error);
+        callback(error);
       });
   }
 
