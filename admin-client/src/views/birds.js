@@ -9,9 +9,10 @@ class Birds extends Component {
 
     this.state = {
       getTest: "", //TODO ?
-      birds: [],
+      birds: []
     };
 
+    this.addBird = this.addBird.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
 
@@ -25,6 +26,22 @@ class Birds extends Component {
         this.setState({
           birds: response.data
         });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  addBird(name, rfid) {
+    const postData = {
+      name: name, //TODO you can also simply write `name,` and `rfid` below, and nothing else (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#New_notations_in_ECMAScript_2015)
+      rfid: rfid
+    }
+
+    axios.post('/api/birds', postData)
+      .then(res => {
+        console.log(res.data);
+        this.getBirds();
       })
       .catch((error) => {
         console.log(error);
@@ -46,11 +63,13 @@ class Birds extends Component {
     return(
       <div>
         <br/>
-        <BirdForm/>
+        <BirdForm
+          addBird={ this.addBird }
+        />
         <br/>
         <BirdTable
-            birds={ this.state.birds }
-            deleteBird={ this.deleteItem }
+          birds={ this.state.birds }
+          deleteBird={ this.deleteItem }
         />
       </div>
     );
