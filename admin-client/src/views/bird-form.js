@@ -24,25 +24,20 @@ class BirdForm extends Component {
     this.setState({ birdName: e.target.value });
   }
 
-  // Handle submit
   handleSubmit(e) {
     e.preventDefault();
-    const postData = {
-      name: this.state.birdName,
-      rfid: this.state.birdRfid
-    }
-    axios.post('/api/birds', postData)
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          birdName: '',
-          birdRfid: ''
-        })
-        // Also remember to reload data.
+
+    this.props.addBird(this.state.birdName, this.state.birdRfid, (error) => {
+      if (error) {
+        //...
+        return //returning early to avoid an `else` for the rest of the function
+      }
+
+      this.setState({
+        birdName: '',
+        birdRfid: ''
       })
-      .catch((error) => {
-        console.log(error);
-      });
+    });
   }
 
   render() {
